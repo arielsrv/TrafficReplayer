@@ -9,6 +9,7 @@ using static System.Console;
 
 #pragma warning disable 1998
 
+
 namespace TrafficReplayer
 {
     public static class Program
@@ -30,10 +31,10 @@ namespace TrafficReplayer
             Parallel.ForEach(resources, new ParallelOptions { MaxDegreeOfParallelism = options.MaxDegreeOfParallelism },
                 resource =>
                 {
-                    IRestRequest requestTarget = new RestRequest($"{options.Scope}{resource}");
+                    var requestTarget = new RestRequest($"{options.Scope}{resource}");
                     WriteLine(resource);
                     requestTarget.AddHeader("x-auth-token", options.XAuthToken);
-                    IRestResponse<Response> responseTarget = targetClient.Execute<Response>(requestTarget);
+                    var responseTarget = targetClient.Execute<Response>(requestTarget);
                 });
 
             var i = 0;
@@ -46,7 +47,7 @@ namespace TrafficReplayer
 
                 batch.AddRange(chunk.Select(resource => Task.Run(() =>
                 {
-                    IRestRequest requestTarget = new RestRequest($"{options.Scope}{resource}");
+                    var requestTarget = new RestRequest($"{options.Scope}{resource}");
                     requestTarget.AddHeader("x-auth-token", options.XAuthToken);
                     var responseTarget = targetClient.Execute<Response>(requestTarget);
 
